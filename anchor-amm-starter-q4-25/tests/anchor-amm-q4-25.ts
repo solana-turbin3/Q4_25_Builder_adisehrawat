@@ -124,6 +124,7 @@ describe("anchor-amm-q4-25", () => {
   });
 
   it("Initialize AMM pool", async () => {
+
     const tx = await program.methods
       .initialize(seed, fee, user)
       .accountsStrict({
@@ -224,8 +225,8 @@ describe("anchor-amm-q4-25", () => {
     );
   });
   it("Second deposit to Liquidity", async () => {
-    const depositMaxX = new anchor.BN(2_000_000_000); // lets keep max_x = 1000 tokens
-    const depositMaxY = new anchor.BN(3_000_000_000); // lets keep max_y = 2000 tokens
+    const depositMaxX = new anchor.BN(2_000_000_000); // lets keep max_x = 2000 tokens
+    const depositMaxY = new anchor.BN(3_000_000_000); // lets keep max_y = 3000 tokens
 
     console.log(
       `In this case depositMaxX is: ${

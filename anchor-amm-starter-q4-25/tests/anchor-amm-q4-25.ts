@@ -225,8 +225,8 @@ describe("anchor-amm-q4-25", () => {
     );
   });
   it("Second deposit to Liquidity", async () => {
-    const depositMaxX = new anchor.BN(2_000_000_000); // lets keep max_x = 2000 tokens
-    const depositMaxY = new anchor.BN(3_000_000_000); // lets keep max_y = 3000 tokens
+    const depositMaxX = new anchor.BN(100_000_000); // lets keep max_x = 100 tokens
+    const depositMaxY = new anchor.BN(200_000_000); // lets keep max_y = 200 tokens
 
     console.log(
       `In this case depositMaxX is: ${
@@ -240,12 +240,12 @@ describe("anchor-amm-q4-25", () => {
     );
     console.log(
       `In this case amount to be deposit is: ${
-        BigInt(500_000_000) / SIX_DECIMAL
+        BigInt(100_000_000) / SIX_DECIMAL
       }`
     );
 
     const tx = await program.methods
-      .deposit(new anchor.BN(500_000_000), depositMaxX, depositMaxY)
+      .deposit(new anchor.BN(100_000_000), depositMaxX, depositMaxY)
       .accountsStrict({
         user: user,
         mintX: mintX,
@@ -287,7 +287,7 @@ describe("anchor-amm-q4-25", () => {
 
     assert.equal(
       userLpAccountInfo.amount.toString(),
-      new anchor.BN(1_500_000_000).toString()
+      new anchor.BN(1_100_000_000).toString()
     );
   });
 

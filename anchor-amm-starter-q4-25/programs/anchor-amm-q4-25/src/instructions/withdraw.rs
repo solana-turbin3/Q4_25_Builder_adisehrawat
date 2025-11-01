@@ -84,7 +84,7 @@ impl<'info> Withdraw<'info> {
                     self.vault_y.amount,
                     self.mint_lp.supply,
                     amount,
-                    6,
+                    10_000_000,
                 )
                 .unwrap();
                 (amounts.x, amounts.y)

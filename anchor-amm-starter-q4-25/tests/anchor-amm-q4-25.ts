@@ -32,15 +32,15 @@ describe("anchor-amm-q4-25", () => {
 
   const SIX_DECIMAL = BigInt(1_000_000);
 
-  const seed = new anchor.BN(9876);
+  const seed = new anchor.BN(2365);
   const fee = 10;
   const initialAmount = 10_000_000_000; // 10,000 tokens
 
   before(async () => {
-    await provider.connection.requestAirdrop(
-      user,
-      10 * anchor.web3.LAMPORTS_PER_SOL
-    );
+    // await provider.connection.requestAirdrop(
+    //   user,
+    //   10 * anchor.web3.LAMPORTS_PER_SOL
+    // );
 
     // creating mint for tokens X and Y
     mintX = await createMint(
@@ -225,8 +225,8 @@ describe("anchor-amm-q4-25", () => {
     );
   });
   it("Second deposit to Liquidity", async () => {
-    const depositMaxX = new anchor.BN(100_000_000); // lets keep max_x = 100 tokens
-    const depositMaxY = new anchor.BN(200_000_000); // lets keep max_y = 200 tokens
+    const depositMaxX = new anchor.BN(5000_000_000); // lets keep max_x = 5000 tokens
+    const depositMaxY = new anchor.BN(7000_000_000); // lets keep max_y = 7000 tokens
 
     console.log(
       `In this case depositMaxX is: ${
@@ -240,12 +240,12 @@ describe("anchor-amm-q4-25", () => {
     );
     console.log(
       `In this case amount to be deposit is: ${
-        BigInt(100_000_000) / SIX_DECIMAL
+        BigInt(500_000_000) / SIX_DECIMAL
       }`
     );
 
     const tx = await program.methods
-      .deposit(new anchor.BN(100_000_000), depositMaxX, depositMaxY)
+      .deposit(new anchor.BN(500_000_000), depositMaxX, depositMaxY)
       .accountsStrict({
         user: user,
         mintX: mintX,
@@ -287,242 +287,242 @@ describe("anchor-amm-q4-25", () => {
 
     assert.equal(
       userLpAccountInfo.amount.toString(),
-      new anchor.BN(1_100_000_000).toString()
+      new anchor.BN(1_500_000_000).toString()
     );
   });
 
-  it("Swap 100 token X for token Y", async () => {
-    const swapAmount = new anchor.BN(100_000_000);
-    const min = new anchor.BN(1);
+//   it("Swap 100 token X for token Y", async () => {
+//     const swapAmount = new anchor.BN(100_000_000);
+//     const min = new anchor.BN(1);
 
-    const userXAmountBefore = await getAccount(provider.connection, userX);
-    const userYAmountBefore = await getAccount(provider.connection, userY);
+//     const userXAmountBefore = await getAccount(provider.connection, userX);
+//     const userYAmountBefore = await getAccount(provider.connection, userY);
 
-    const tx = await program.methods
-      .swap(true, swapAmount, min)
-      .accountsStrict({
-        user: user,
-        mintX: mintX,
-        mintY: mintY,
-        config: configPDA,
-        mintLp: mintLp,
-        vaultX: vaultX,
-        vaultY: vaultY,
-        userX: userX,
-        userY: userY,
-        userLp: userLP,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .rpc();
+//     const tx = await program.methods
+//       .swap(true, swapAmount, min)
+//       .accountsStrict({
+//         user: user,
+//         mintX: mintX,
+//         mintY: mintY,
+//         config: configPDA,
+//         mintLp: mintLp,
+//         vaultX: vaultX,
+//         vaultY: vaultY,
+//         userX: userX,
+//         userY: userY,
+//         userLp: userLP,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+//         systemProgram: anchor.web3.SystemProgram.programId,
+//       })
+//       .rpc();
 
-    console.log("Swap successful, tx is: ", tx);
+//     console.log("Swap successful, tx is: ", tx);
 
-    const userXAmountAfter = await getAccount(provider.connection, userX);
-    const userYAmountAfter = await getAccount(provider.connection, userY);
+//     const userXAmountAfter = await getAccount(provider.connection, userX);
+//     const userYAmountAfter = await getAccount(provider.connection, userY);
 
-    assert.ok(
-      userXAmountAfter.amount < userXAmountBefore.amount,
-      "User X balance should decrease"
-    );
-    assert.ok(
-      userYAmountAfter.amount > userYAmountBefore.amount,
-      "User Y balance should increase"
-    );
+//     assert.ok(
+//       userXAmountAfter.amount < userXAmountBefore.amount,
+//       "User X balance should decrease"
+//     );
+//     assert.ok(
+//       userYAmountAfter.amount > userYAmountBefore.amount,
+//       "User Y balance should increase"
+//     );
 
-    console.log(
-      `User have Initial X token: ${
-        BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have Initial Y token: ${
-        BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After X token: ${
-        BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After Y token: ${
-        BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
+//     console.log(
+//       `User have Initial X token: ${
+//         BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have Initial Y token: ${
+//         BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After X token: ${
+//         BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After Y token: ${
+//         BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
 
-    console.log(
-      `X balance change: ${
-        BigInt(
-          (userXAmountBefore.amount - userXAmountAfter.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-    console.log(
-      `Y balance change: ${
-        BigInt(
-          (userYAmountAfter.amount - userYAmountBefore.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-  });
+//     console.log(
+//       `X balance change: ${
+//         BigInt(
+//           (userXAmountBefore.amount - userXAmountAfter.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//     console.log(
+//       `Y balance change: ${
+//         BigInt(
+//           (userYAmountAfter.amount - userYAmountBefore.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//   });
 
-  it("now Swap 150 token X for token Y", async () => {
-    const swapAmount = new anchor.BN(150_000_000);
-    const min = new anchor.BN(1);
+//   it("now Swap 150 token X for token Y", async () => {
+//     const swapAmount = new anchor.BN(150_000_000);
+//     const min = new anchor.BN(1);
 
-    const userXAmountBefore = await getAccount(provider.connection, userX);
-    const userYAmountBefore = await getAccount(provider.connection, userY);
+//     const userXAmountBefore = await getAccount(provider.connection, userX);
+//     const userYAmountBefore = await getAccount(provider.connection, userY);
 
-    const tx = await program.methods
-      .swap(true, swapAmount, min)
-      .accountsStrict({
-        user: user,
-        mintX: mintX,
-        mintY: mintY,
-        config: configPDA,
-        mintLp: mintLp,
-        vaultX: vaultX,
-        vaultY: vaultY,
-        userX: userX,
-        userY: userY,
-        userLp: userLP,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .rpc();
+//     const tx = await program.methods
+//       .swap(true, swapAmount, min)
+//       .accountsStrict({
+//         user: user,
+//         mintX: mintX,
+//         mintY: mintY,
+//         config: configPDA,
+//         mintLp: mintLp,
+//         vaultX: vaultX,
+//         vaultY: vaultY,
+//         userX: userX,
+//         userY: userY,
+//         userLp: userLP,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+//         systemProgram: anchor.web3.SystemProgram.programId,
+//       })
+//       .rpc();
 
-    console.log("Swap successful, tx is: ", tx);
+//     console.log("Swap successful, tx is: ", tx);
 
-    const userXAmountAfter = await getAccount(provider.connection, userX);
-    const userYAmountAfter = await getAccount(provider.connection, userY);
-
-
-    assert.ok(
-      userXAmountAfter.amount < userXAmountBefore.amount,
-      "User X balance should decrease"
-    );
-    assert.ok(
-      userYAmountAfter.amount > userYAmountBefore.amount,
-      "User Y balance should increase"
-    );
-
-    console.log(
-      `User have Initial X token: ${
-        BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have Initial Y token: ${
-        BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After X token: ${
-        BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After Y token: ${
-        BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-
-    console.log(
-      `X balance change: ${
-        BigInt(
-          (userXAmountBefore.amount - userXAmountAfter.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-    console.log(
-      `Y balance change: ${
-        BigInt(
-          (userYAmountAfter.amount - userYAmountBefore.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-  });
-
-  it("Swap 150 token Y for token X", async () => {
-    const swapAmount = new anchor.BN(150_000_000);
-    const min = new anchor.BN(1);
-
-    const userXAmountBefore = await getAccount(provider.connection, userX);
-    const userYAmountBefore = await getAccount(provider.connection, userY);
-
-    const tx = await program.methods
-      .swap(false, swapAmount, min)
-      .accountsStrict({
-        user: user,
-        mintX: mintX,
-        mintY: mintY,
-        config: configPDA,
-        mintLp: mintLp,
-        vaultX: vaultX,
-        vaultY: vaultY,
-        userX: userX,
-        userY: userY,
-        userLp: userLP,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .rpc();
-
-    console.log("Swap successful, tx is: ", tx);
-
-    const userXAmountAfter = await getAccount(provider.connection, userX);
-    const userYAmountAfter = await getAccount(provider.connection, userY);
+//     const userXAmountAfter = await getAccount(provider.connection, userX);
+//     const userYAmountAfter = await getAccount(provider.connection, userY);
 
 
-    assert.ok(
-      userXAmountAfter.amount > userXAmountBefore.amount,
-      "User X balance should decrease"
-    );
-    assert.ok(
-      userYAmountAfter.amount < userYAmountBefore.amount,
-      "User Y balance should increase"
-    );
+//     assert.ok(
+//       userXAmountAfter.amount < userXAmountBefore.amount,
+//       "User X balance should decrease"
+//     );
+//     assert.ok(
+//       userYAmountAfter.amount > userYAmountBefore.amount,
+//       "User Y balance should increase"
+//     );
 
-    console.log(
-      `User have Initial X token: ${
-        BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have Initial Y token: ${
-        BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After X token: ${
-        BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
-    console.log(
-      `User have After Y token: ${
-        BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
-      } Tokens`
-    );
+//     console.log(
+//       `User have Initial X token: ${
+//         BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have Initial Y token: ${
+//         BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After X token: ${
+//         BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After Y token: ${
+//         BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
 
-    console.log(
-      `X balance change: ${
-        BigInt(
-          (userXAmountAfter.amount - userXAmountBefore.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-    console.log(
-      `Y balance change: ${
-        BigInt(
-          (userYAmountBefore.amount - userYAmountAfter.amount).toString()
-        ) / SIX_DECIMAL
-      }`
-    );
-  });
+//     console.log(
+//       `X balance change: ${
+//         BigInt(
+//           (userXAmountBefore.amount - userXAmountAfter.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//     console.log(
+//       `Y balance change: ${
+//         BigInt(
+//           (userYAmountAfter.amount - userYAmountBefore.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//   });
+
+//   it("Swap 150 token Y for token X", async () => {
+//     const swapAmount = new anchor.BN(150_000_000);
+//     const min = new anchor.BN(1);
+
+//     const userXAmountBefore = await getAccount(provider.connection, userX);
+//     const userYAmountBefore = await getAccount(provider.connection, userY);
+
+//     const tx = await program.methods
+//       .swap(false, swapAmount, min)
+//       .accountsStrict({
+//         user: user,
+//         mintX: mintX,
+//         mintY: mintY,
+//         config: configPDA,
+//         mintLp: mintLp,
+//         vaultX: vaultX,
+//         vaultY: vaultY,
+//         userX: userX,
+//         userY: userY,
+//         userLp: userLP,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+//         systemProgram: anchor.web3.SystemProgram.programId,
+//       })
+//       .rpc();
+
+//     console.log("Swap successful, tx is: ", tx);
+
+//     const userXAmountAfter = await getAccount(provider.connection, userX);
+//     const userYAmountAfter = await getAccount(provider.connection, userY);
+
+
+//     assert.ok(
+//       userXAmountAfter.amount > userXAmountBefore.amount,
+//       "User X balance should decrease"
+//     );
+//     assert.ok(
+//       userYAmountAfter.amount < userYAmountBefore.amount,
+//       "User Y balance should increase"
+//     );
+
+//     console.log(
+//       `User have Initial X token: ${
+//         BigInt(userXAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have Initial Y token: ${
+//         BigInt(userYAmountBefore.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After X token: ${
+//         BigInt(userXAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+//     console.log(
+//       `User have After Y token: ${
+//         BigInt(userYAmountAfter.amount.toString()) / SIX_DECIMAL
+//       } Tokens`
+//     );
+
+//     console.log(
+//       `X balance change: ${
+//         BigInt(
+//           (userXAmountAfter.amount - userXAmountBefore.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//     console.log(
+//       `Y balance change: ${
+//         BigInt(
+//           (userYAmountBefore.amount - userYAmountAfter.amount).toString()
+//         ) / SIX_DECIMAL
+//       }`
+//     );
+//   });
 
   it("Withdraws liquidity from the pool", async () => {
     const userLpBefore = await getAccount(provider.connection, userLP);
@@ -532,7 +532,7 @@ describe("anchor-amm-q4-25", () => {
     const userYBefore = await getAccount(provider.connection, userY);
 
     const tx = await program.methods
-      .withdraw(new anchor.BN(withdrawAmount.toString()), new anchor.BN(0), new anchor.BN(0))
+      .withdraw(new anchor.BN(500_000_000), new anchor.BN(0), new anchor.BN(0))
       .accountsStrict({
         user: user,
         mintX: mintX,

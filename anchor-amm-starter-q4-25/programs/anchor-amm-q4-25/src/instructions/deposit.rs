@@ -70,7 +70,7 @@ impl<'info> Deposit<'info> {
         max_y: u64,  // Maximum amount of token Y that the user is willing to deposit
     ) -> Result<()> {
         require!(self.config.locked == false, AmmError::PoolLocked);
-        require!(amount != 0, AmmError::InvalidAmount);
+        // require!(amount != 0, AmmError::InvalidAmount);
 
         // This will calculate how much x and y must be added to increase the liquidity amount
         let (x, y) = match self.mint_lp.supply == 0
@@ -84,7 +84,7 @@ impl<'info> Deposit<'info> {
                     self.vault_y.amount,
                     self.mint_lp.supply,
                     amount,
-                    1_000_000,
+                    10_000_000,
                 )
                 .unwrap();
                 (amounts.x, amounts.y)

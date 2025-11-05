@@ -1,0 +1,3 @@
+[submodule "capstone/solify"]
+	path = capstone/solify
+	url = https://github.com/adisehrawat/solify.git

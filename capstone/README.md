@@ -1,6 +1,6 @@
 # Solify - Automated Test Generation for Solana Anchor Programs
 
-![Solify](solify/documents/solify_program_diagram.png)
+![Solify](documents/solify_program_diagram.png)
 
 ## Overview
 
@@ -239,7 +239,7 @@ solify inspect <transaction-signature>
 
 ## Test Results
 
-![Tests Passed](solify/documents/tests_passed.png)
+![Tests Passed](documents/tests_passed.png)
 
 Solify has been tested with multiple Anchor programs including:
 - Counter programs
